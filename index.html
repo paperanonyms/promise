@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>PRoMiSe: Persistent Multi-Robot Monitoring Sim-to-Real-to-Field</title>
+<title>PRoMiSe</title>
 </head>
 <body>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
@@ -74,6 +74,15 @@
     padding-block:64px 52px;
     border-bottom:1px solid rgba(227,218,199,.14);
   }
+  .btns{display:flex; flex-wrap:wrap; gap:9px; justify-content:center; margin-top:24px}
+  .btn{
+    font-family:"IBM Plex Mono", ui-monospace, Menlo, monospace;
+    font-size:.78rem; letter-spacing:.06em; text-decoration:none;
+    padding:8px 20px; border-radius:2px;
+    background:var(--sand); color:var(--navy); border:1px solid var(--sand);
+  }
+  .btn:hover{background:#F2EFE7; border-color:#F2EFE7}
+  .btn:focus-visible{outline:2px solid var(--sand); outline-offset:3px}
   .masthead .wrap{text-align:center}
   h1{
     font-size:clamp(1.7rem, 3.4vw, 2.3rem); line-height:1.2; margin:0 0 16px;
@@ -213,9 +222,10 @@
 
 <header class="masthead">
   <div class="wrap">
-    <h1>PRoMiSe: Persistent Multi-Robot Monitoring Sim-to-Real-to-Field</h1>
+    <h1>PRoMiSe: Persistent Multi-Robot Monitoring<br>Sim-to-Real-to-Field</h1>
     <p class="authors">Author names withheld for review</p>
     <p class="venue">Under double-anonymous review</p>
+    <div class="btns"><a class="btn" href="paper.pdf">Paper</a></div>
   </div>
 </header>
 
@@ -224,7 +234,7 @@
 
   <section>
     <span class="eyebrow">Abstract</span>
-    <p>Persistent multi-robot patrolling is a complex real-world problem, requiring repeated observation of an environment while adapting to changes in layout and team composition, under three requirements: persistence, adaptability, and unpredictability. We present PRoMiSe, a multi-agent reinforcement learning policy for visibility-based persistent monitoring that commands body-frame velocities, with no patrol graph, task allocation or planner in the control loop. It combines a compact egocentric idleness summary and lidar ranges with attention over a variable number of teammates and recurrent temporal reasoning. Trained with proximal policy optimization on procedurally generated map layouts with one to four robots, a single shared policy transfers zero-shot to unseen maps and teams of up to sixteen robots. It attains the lowest mean idleness at every team size, with a mean per-map idleness reduction of 45.1% relative to the next best method, and idleness falls 91.5% from one to sixteen robots. Under map changes, robot losses, and communication delays at sixteen robots, its idleness increase is 85%, 89% and 76% smaller than the best baseline, while revisit-time variability remains comparable. The same weights run unmodified on simulated and physical Go2 quadrupeds at three sites, the largest eight times the average training map, matching simulated counterpart coverage to within 0.6 percentage points.</p>
+    <p>Persistent multi-robot patrolling is a complex real-world problem, requiring repeated observation of an environment while adapting to changes in layout and team composition. We present PRoMiSe, a multi-agent reinforcement learning policy for visibility-based persistent monitoring that commands body-frame velocities, with no patrol graph, task allocation or planner in the control loop. It combines a compact egocentric idleness summary and lidar ranges with attention over a variable number of teammates and recurrent temporal reasoning. A single policy transfers without fine-tuning to unseen simulated maps and teams of up to sixteen robots, and runs unmodified on Unitree Go2 quadrupeds at three physical sites. Matched indoor experiments with one to four robots show cumulative coverage within 0.6 percentage points of simulation. Outdoor deployments with two robots demonstrate coordinated patrolling in previously unseen environments, including an industrial site eight times the average training-map area. These results provide evidence of sim-to-real-to-field transfer for persistent multi-robot monitoring across layouts, scales, and team sizes.</p>
   </section>
 
   <section>
@@ -279,7 +289,7 @@
       <figcaption>The training range, one to four robots on the same procedural layout. Mean idleness is reported live in each panel header.</figcaption>
 
       <h3>Generalization across team size</h3>
-      <p class="lead">Training only ever sees one to four robots. The same checkpoint then runs with eight, twelve and sixteen without retraining, re-tuning or any reassignment: the team simply re-partitions the floor. Across the held-out maps, idleness falls 91.5% from one to sixteen robots.</p>
+      <p class="lead">Training only ever sees one to four robots. The same checkpoint then runs with eight, twelve and sixteen without retraining, re-tuning or any reassignment: the team simply re-partitions the floor. Going from one to sixteen robots cuts average idleness from 304.3 s to 25.8 s and raises final coverage from 91.6% to 99.7%, so performance keeps improving beyond the training range.</p>
       <div class="grid g3 tight-wide">
         <figure><span class="tag b">8 robots</span><div class="shot"><img src="gifs/sim/ood_8robots.gif" alt="Eight robots on the procedural layout" loading="lazy"></div></figure>
         <figure><span class="tag b">12 robots</span><div class="shot"><img src="gifs/sim/ood_12robots.gif" alt="Twelve robots on the procedural layout" loading="lazy"></div></figure>
@@ -313,7 +323,7 @@
         <figure><span class="tag">4 robots</span><div class="shot"><img src="gifs/office_4cam_pack.gif" alt="Office patrol, four robots" loading="lazy"></div></figure>
         <figure><span class="tag b">4 robots &middot; recorded idleness</span><div class="shot"><img src="gifs/office_4map.gif" alt="Recorded idleness map of the four-robot office deployment" loading="lazy"></div></figure>
       </div>
-      <figcaption>Idleness falls 3.7-fold from one to four robots on hardware, against 4.0-fold in matched simulation, so the team-scaling effect transfers and not only the single-robot behaviour.</figcaption>
+      <figcaption>Across one to four robots in the laboratory, final coverage on hardware stays within one percentage point of matched simulation.</figcaption>
 
       <h3>Real-world deployments</h3>
       <p class="lead">The same checkpoint runs on physical Go2 quadrupeds at two outdoor sites, neither of them seen in training. The industrial test site is eight times the average training map.</p>
@@ -334,24 +344,24 @@
     <span class="eyebrow">Results</span>
     <h2>Key results</h2>
     <div class="stats">
-      <div class="stat"><b>45.1%</b><span>lower mean idleness than the next best method</span></div>
       <div class="stat"><b>91.5%</b><span>idleness drop from one to sixteen robots</span></div>
+      <div class="stat"><b>99.7%</b><span>final coverage at sixteen robots</span></div>
       <div class="stat"><b>16</b><span>robots at deployment, four in training</span></div>
       <div class="stat"><b>0.6 pp</b><span>coverage gap, hardware against simulation</span></div>
     </div>
     <ul>
-      <li><span class="num">Persistence.</span> Lowest mean idleness at every team size across fourteen held-out maps, a mean per-map reduction of 45.1% against the next best method.</li>
-      <li><span class="num">Adaptability.</span> Under corridor closure, robot loss and communication delay at sixteen robots, the within-run idleness increase is up to 89% smaller than the best baseline.</li>
-      <li><span class="num">Unpredictability.</span> Revisit-time variability stays comparable to the learned baseline and above the deterministic Watchman route, while monitoring is substantially fresher.</li>
-      <li><span class="num">Zero-shot transfer.</span> A single checkpoint covers every held-out map and team size without retraining, outperforming every baseline in all cases.</li>
-      <li><span class="num">On the field.</span> The same weights run unmodified on Go2 quadrupeds at three sites, the largest eight times the average training map, matching simulated coverage to within 0.6 percentage points and preserving the team-size scaling, 3.7-fold against 4.0-fold from one to four robots.</li>
+      <li><span class="num">Scaling past the training range.</span> From one to sixteen robots, average idleness falls from 304.3 s to 25.8 s and final coverage rises from 91.6% to 99.7%. Training only ever saw one to four.</li>
+      <li><span class="num">Zero-shot transfer.</span> One policy, trained entirely in a lightweight 2D simulator, runs on unseen maps and team sizes with no fine-tuning and no patrol graph.</li>
+      <li><span class="num">Laboratory.</span> Across one to four quadrupeds, cumulative coverage matches simulation to within 0.6 percentage points.</li>
+      <li><span class="num">Field.</span> At the parking lot, average idleness is 5.1% higher than simulation and coverage one point lower; at the industrial site, eight times the average training map, idleness differs by 0.3% and coverage is two points higher.</li>
+      <li><span class="num">What the simulator needs.</span> Obstacle geometry, sensor observations and area idleness are enough. Detailed legged dynamics and photorealistic rendering are not required for the behaviour to transfer.</li>
     </ul>
   </section>
 
   <section>
     <span class="eyebrow">Cite</span>
     <h2>BibTeX</h2>
-<pre>@inproceedings{gempa2027,
+<pre>@inproceedings{promise2027,
   title     = {PRoMiSe: Persistent Multi-Robot Monitoring Sim-to-Real-to-Field},
   author    = {Anonymous},
   booktitle = {Under review},
